@@ -9,7 +9,13 @@ Based on the provided design.png file, the brand identity includes:
 - **Tagline**: "Human centered, AI powered"
 - **Logo**: Stylized black unicorn with flowing mane in black, gray, and white tones
 - **Color Scheme**: Black primary, gray/slate secondary, white background
-- **Typography**: Bold, modern sans-serif
+- **Typography**: 
+  - **Primary Font**: Bold, geometric sans-serif (similar to Poppins Bold/Black or Montserrat ExtraBold)
+  - **Secondary Font**: Clean, readable sans-serif for body text (Inter or Roboto)
+  - **Characteristics**: Strong, thick letterforms with modern geometric structure
+  - **Recommended Google Fonts**: 
+    - Primary: "Poppins" (weights: 600, 700, 800, 900) for headings and company name
+    - Secondary: "Inter" (weights: 400, 500, 600) for body text and UI elements
 
 ## Application Structure
 

@@ -19,42 +19,48 @@
 - **FR-008**: Session persistence for authenticated users
 - **FR-009**: Secure logout functionality
 
-#### 2.3 Todo Management System
-- **FR-010**: Create new todo items
-- **FR-011**: Read/view existing todo items
-- **FR-012**: Update todo item status and content
-- **FR-013**: Delete todo items
-- **FR-014**: Todo list only accessible to authenticated users
+#### 2.3 Business Administration System
+- **FR-010**: Dashboard with card-based navigation to different modules
+- **FR-011**: Todo Management - Create, read, update, delete business tasks
+- **FR-012**: User Management - Manage user accounts and permissions
+- **FR-013**: Client Management - Manage client relationships and contacts
+- **FR-014**: Project Management - Manage client projects and deliverables
+- **FR-015**: Settings - Configure application preferences
+- **FR-016**: Reports & Analytics - Generate business reports and analytics
+- **FR-017**: All business functions only accessible to authenticated users
 
 ### 3. Technical Requirements
 
 #### 3.1 Frontend
 - **TR-001**: Next.js 14+ with App Router
 - **TR-002**: TypeScript for type safety
-- **TR-003**: Tailwind CSS for styling
-- **TR-004**: Responsive design (mobile-first approach)
-- **TR-005**: Client-side routing for SPA experience
+- **TR-003**: Tailwind CSS for styling with CSS custom properties
+- **TR-004**: Google Fonts integration (Poppins for headings/brand, Inter for body text)
+- **TR-005**: Responsive design (mobile-first approach)
+- **TR-006**: Client-side routing for SPA experience
 
 #### 3.2 Authentication
-- **TR-006**: JWT tokens or session-based authentication
-- **TR-007**: Secure password handling (hashing)
-- **TR-008**: Authentication state management
-- **TR-009**: Route protection for authenticated pages
+- **TR-007**: JWT tokens with HTTP-only cookies for session management
+- **TR-008**: Secure password handling with bcrypt hashing
+- **TR-009**: Authentication state management
+- **TR-010**: Route protection for authenticated pages
 
 #### 3.3 Data Management
-- **TR-010**: Server-side database for account and todo data persistence
-- **TR-011**: API routes for CRUD operations
-- **TR-012**: Client-side state management (React state/context) for UI state only
-- **TR-013**: Form validation for authentication and todo inputs
-- **TR-014**: Database schema for users and todos
+- **TR-011**: PostgreSQL database for production, SQLite for development
+- **TR-012**: Prisma ORM for type-safe database operations
+- **TR-013**: API routes for CRUD operations across all business modules
+- **TR-014**: Client-side state management (React state/context) for UI state only
+- **TR-015**: Form validation for authentication and business data inputs
+- **TR-016**: Database schema for users, todos, and future business entities
 
 #### 3.4 Security
-- **TR-015**: HTTPS enforcement in production
-- **TR-016**: Input sanitization and validation
-- **TR-017**: CSRF protection
-- **TR-018**: Secure storage of authentication credentials in database
-- **TR-019**: Password hashing with bcrypt or similar
-- **TR-020**: Environment variables for sensitive configuration
+- **TR-017**: HTTPS enforcement in production
+- **TR-018**: Input sanitization and validation
+- **TR-019**: CSRF protection
+- **TR-020**: Secure storage of authentication credentials in database
+- **TR-021**: Password hashing with bcrypt
+- **TR-022**: Environment variables for sensitive configuration
+- **TR-023**: User-specific data access control
 
 ### 4. Non-Functional Requirements
 
@@ -80,11 +86,13 @@
 | Framework | Next.js | 14+ |
 | Language | TypeScript | 5+ |
 | Styling | Tailwind CSS | 3+ |
-| Database | SQLite (PostgreSQL for prod) | Latest |
+| Fonts | Google Fonts (Poppins, Inter) | Latest |
+| Database | PostgreSQL (SQLite for dev) | Latest |
 | ORM | Prisma | 5+ |
 | Authentication | JWT + bcrypt | Latest |
 | Runtime | Node.js | 18+ |
 | Package Manager | npm | Latest |
+| Hosting | Vercel | Latest |
 
 ### 6. Project Structure
 ```
@@ -99,7 +107,13 @@ buds/
 │   │   │   └── todos/
 │   │   ├── page.tsx (landing page)
 │   │   ├── admin/
-│   │   │   └── page.tsx (todo management)
+│   │   │   ├── page.tsx (dashboard)
+│   │   │   ├── todos/page.tsx
+│   │   │   ├── users/page.tsx (future)
+│   │   │   ├── clients/page.tsx (future)
+│   │   │   ├── projects/page.tsx (future)
+│   │   │   ├── settings/page.tsx (future)
+│   │   │   └── reports/page.tsx (future)
 │   │   └── layout.tsx
 │   ├── components/
 │   │   └── AuthModal.tsx
@@ -132,22 +146,32 @@ buds/
 3. Add session management
 4. Create route protection
 
-#### Phase 3: Todo Management
-1. Create todo list interface
-2. Implement CRUD operations
+#### Phase 3: Business Administration System
+1. Create dashboard with card-based navigation
+2. Implement todo management with CRUD operations
 3. Add database persistence with Prisma
-4. Style todo components
+4. Create modular admin page structure for future expansion
 
-#### Phase 4: Integration and Testing
-1. Integrate authentication with todo system
-2. Add error handling
-3. Test all functionality
-4. Optimize performance
+#### Phase 4: Typography and UI Polish
+1. Integrate Google Fonts (Poppins for headings, Inter for body)
+2. Implement CSS custom properties for flexible font management
+3. Apply responsive design and visual hierarchy
+4. Optimize performance and user experience
+
+#### Phase 5: Deployment and Production
+1. Configure Neon PostgreSQL database
+2. Deploy to Vercel with environment variables
+3. Set up domain pointing and SSL
+4. Create production admin accounts
 
 ### 8. Success Criteria
-- ✅ Landing page displays correctly on all devices
+- ✅ Landing page displays correctly on all devices with proper typography
 - ✅ Logo click triggers authentication modal
-- ✅ Valid credentials grant access to todo system
+- ✅ Valid credentials grant access to business administration system
+- ✅ Dashboard provides card-based navigation to all business modules
 - ✅ Todo CRUD operations function correctly
 - ✅ Session persists across page refreshes
 - ✅ Application is secure and follows best practices
+- ✅ Typography matches brand design with Poppins and Inter fonts
+- ✅ Application deployed to production with PostgreSQL database
+- ✅ Modular architecture supports future business module expansion

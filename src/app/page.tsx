@@ -21,10 +21,10 @@ export default function Home() {
             onClick={() => setIsAuthModalOpen(true)}
           />
         </div>
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-black mb-4 whitespace-nowrap">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-brand font-black text-black mb-4 whitespace-nowrap">
           Black Unicorn Design Studio
         </h1>
-        <p className="text-xl md:text-2xl text-gray-600">
+        <p className="text-xl md:text-2xl font-body font-medium text-gray-600">
           Human centered, AI powered
         </p>
       </div>
