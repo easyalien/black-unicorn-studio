@@ -80,10 +80,11 @@
 | Framework | Next.js | 14+ |
 | Language | TypeScript | 5+ |
 | Styling | Tailwind CSS | 3+ |
-| Database | PostgreSQL (SQLite for dev) | Latest |
+| Database | SQLite (PostgreSQL for prod) | Latest |
 | ORM | Prisma | 5+ |
+| Authentication | JWT + bcrypt | Latest |
 | Runtime | Node.js | 18+ |
-| Package Manager | npm/yarn | Latest |
+| Package Manager | npm | Latest |
 
 ### 6. Project Structure
 ```
@@ -97,14 +98,11 @@ buds/
 │   │   │   ├── auth/
 │   │   │   └── todos/
 │   │   ├── page.tsx (landing page)
-│   │   ├── dashboard/
+│   │   ├── admin/
 │   │   │   └── page.tsx (todo management)
 │   │   └── layout.tsx
 │   ├── components/
-│   │   ├── Logo.tsx
-│   │   ├── AuthModal.tsx
-│   │   ├── TodoList.tsx
-│   │   └── TodoItem.tsx
+│   │   └── AuthModal.tsx
 │   ├── lib/
 │   │   ├── auth.ts
 │   │   ├── db.ts
@@ -137,7 +135,7 @@ buds/
 #### Phase 3: Todo Management
 1. Create todo list interface
 2. Implement CRUD operations
-3. Add local storage persistence
+3. Add database persistence with Prisma
 4. Style todo components
 
 #### Phase 4: Integration and Testing
