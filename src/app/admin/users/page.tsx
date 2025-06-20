@@ -2,19 +2,18 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { User, UserRole } from '@/types'
+import AdminLayout from '@/components/AdminLayout'
 
 interface UserWithCount extends User {
   _count: {
-    todos: number
+    createdTodos: number
   }
 }
 
 export default function UsersPage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [users, setUsers] = useState<UserWithCount[]>([])
-  const [loading, setLoading] = useState(true)
   const [newUser, setNewUser] = useState({ email: '', password: '', firstName: '', lastName: '', title: '', role: UserRole.MEMBER })
   const [editingUser, setEditingUser] = useState<{ id: string; email: string; password: string; firstName: string; lastName: string; title: string; role: UserRole } | null>(null)
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
@@ -61,8 +60,8 @@ export default function UsersPage() {
         bValue = new Date(b.createdAt)
         break
       case 'todos':
-        aValue = a._count.todos
-        bValue = b._count.todos
+        aValue = a._count.createdTodos
+        bValue = b._count.createdTodos
         break
       default:
         return 0
@@ -91,8 +90,6 @@ export default function UsersPage() {
     } catch (error) {
       console.error('Auth check failed:', error)
       router.push('/')
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -182,57 +179,13 @@ export default function UsersPage() {
     }
   }
 
-  const logout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' })
-      router.push('/')
-    } catch (error) {
-      console.error('Logout failed:', error)
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/logo.png"
-              alt="Black Unicorn Design Studio"
-              width={40}
-              height={40}
-              className="cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={() => router.push('/')}
-            />
-            <button
-              onClick={() => router.push('/admin')}
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              ← Back to Dashboard
-            </button>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">Welcome, {currentUser?.email}</span>
-            <button
-              onClick={logout}
-              className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-black transition-colors"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto p-6">
-        <h1 className="text-3xl font-bold text-black text-center mb-8">User Management</h1>
+    <AdminLayout title="User Management">
+      {currentUser?.role !== 'SUPERUSER' && (
+        <div className="text-center text-red-600">Access denied. Superuser role required.</div>
+      )}
+      {currentUser?.role === 'SUPERUSER' && (
+        <>
         
         <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Add New User</h2>
@@ -521,7 +474,7 @@ export default function UsersPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {user._count.todos}
+                          {user._count.createdTodos}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {new Date(user.createdAt).toLocaleDateString()}
@@ -579,7 +532,8 @@ export default function UsersPage() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+        </>
+      )}
+    </AdminLayout>
   )
 }

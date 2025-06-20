@@ -42,8 +42,13 @@ Based on the provided design.png file, the brand identity includes:
   - Due date tracking with overdue indicators
   - Completion tracking with timestamps and user attribution
   - Public todos visible to all users, private todos only to creator
-  - Sortable table interface with multi-column sorting
-- **Professional Interface**: Clean, consistent design with sortable tables and responsive layout
+  - Sortable table interface with streamlined columns (Status, Title, Category, Due Date, Creator, Actions)
+  - Interactive todo details popup with complete information display
+  - Clickable todo titles for detailed view
+- **Professional Interface**: Clean, consistent design with reusable AdminLayout component
+  - Shared header and navigation across all admin pages
+  - Consistent max-width containers and responsive layout
+  - Modal popups for detailed information display
 
 ## User Flow
 1. User visits landing page
@@ -67,8 +72,14 @@ Based on the provided design.png file, the brand identity includes:
   - Due date management with overdue indicators
   - Completion tracking with timestamps and user attribution
   - Creator and completer user information
-  - Sortable table interface with multi-column sorting
-- **Consistent UI/UX**: Standardized headers, sortable tables, and responsive design across all admin pages
+  - Streamlined sortable table interface
+  - Interactive todo details popup with comprehensive information
+  - Clickable titles for detailed view access
+- **Component Architecture**: Reusable AdminLayout component for consistent admin page structure
+  - Shared authentication handling and user context
+  - Consistent header design with logo, navigation, and user controls
+  - Standardized page layout and responsive design
+- **Modern UI/UX**: Clean, professional interface with modal interactions
 
 ## Technical Stack
 - **Framework**: Next.js 14+ with App Router and TypeScript
@@ -116,6 +127,17 @@ enum UserRole {
   SUPERUSER
 }
 ```
+
+## Component Architecture
+- **AdminLayout**: Reusable layout component for all admin pages
+  - Consistent header with logo, navigation, and user controls
+  - Built-in authentication checking and loading states
+  - Standardized page width and responsive design
+- **Todo Details Modal**: Interactive popup for comprehensive todo information
+  - Complete todo details display with organized sections
+  - Status indicators and overdue warnings
+  - Creator and completion tracking information
+  - Responsive design with scroll support
 
 ## API Endpoints
 - **Authentication**: `/api/auth/login`, `/api/auth/logout`, `/api/auth/me`

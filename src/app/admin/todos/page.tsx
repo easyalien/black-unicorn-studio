@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { Todo, User } from '@/types'
+import AdminLayout from '@/components/AdminLayout'
 
 export default function TodosPage() {
   const [user, setUser] = useState<User | null>(null)
   const [todos, setTodos] = useState<Todo[]>([])
-  const [loading, setLoading] = useState(true)
   const [newTodo, setNewTodo] = useState({ title: '', description: '', category: '', isPrivate: false, dueDate: '' })
-  const [sortField, setSortField] = useState<'title' | 'category' | 'completed' | 'dueDate' | 'createdAt' | 'completedAt' | 'creator'>('createdAt')
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+  const [sortField, setSortField] = useState<'title' | 'category' | 'completed' | 'dueDate' | 'creator'>('title')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -48,14 +48,6 @@ export default function TodosPage() {
         aValue = a.dueDate ? new Date(a.dueDate) : new Date('9999-12-31')
         bValue = b.dueDate ? new Date(b.dueDate) : new Date('9999-12-31')
         break
-      case 'createdAt':
-        aValue = new Date(a.createdAt)
-        bValue = new Date(b.createdAt)
-        break
-      case 'completedAt':
-        aValue = a.completedAt ? new Date(a.completedAt) : new Date('9999-12-31')
-        bValue = b.completedAt ? new Date(b.completedAt) : new Date('9999-12-31')
-        break
       case 'creator':
         aValue = a.user?.firstName ? `${a.user.firstName} ${a.user.lastName}` : a.user?.email || ''
         bValue = b.user?.firstName ? `${b.user.firstName} ${b.user.lastName}` : b.user?.email || ''
@@ -81,8 +73,6 @@ export default function TodosPage() {
     } catch (error) {
       console.error('Auth check failed:', error)
       router.push('/')
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -148,59 +138,10 @@ export default function TodosPage() {
     }
   }
 
-  const logout = async () => {
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' })
-      router.push('/')
-    } catch (error) {
-      console.error('Logout failed:', error)
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/logo.png"
-              alt="Black Unicorn Design Studio"
-              width={40}
-              height={40}
-              className="cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={() => router.push('/')}
-            />
-            <button
-              onClick={() => router.push('/admin')}
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              ← Back to Dashboard
-            </button>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">Welcome, {user?.email}</span>
-            <button
-              onClick={logout}
-              className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-black transition-colors"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main className="p-6">
-        <h1 className="text-3xl font-bold text-black text-center mb-8">ToDo Management</h1>
-        
-        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border p-6 mb-6">
+    <AdminLayout title="ToDo Management">
+      <div className="space-y-6">
+        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border p-6">
           <h2 className="text-xl font-semibold mb-4">Add New ToDo</h2>
           <form onSubmit={createTodo} className="space-y-4">
             <div>
@@ -264,7 +205,7 @@ export default function TodosPage() {
           </form>
         </div>
 
-        <div className="w-[90%] mx-auto bg-white rounded-lg shadow-sm border">
+        <div className="w-full bg-white rounded-lg shadow-sm border">
           <div className="p-6 border-b">
             <h2 className="text-xl font-semibold">ToDo List ({todos.length})</h2>
           </div>
@@ -332,32 +273,6 @@ export default function TodosPage() {
                         )}
                       </div>
                     </th>
-                    <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                      onClick={() => handleSort('createdAt')}
-                    >
-                      <div className="flex items-center gap-2">
-                        Created
-                        {sortField === 'createdAt' && (
-                          <span className="text-gray-400">
-                            {sortDirection === 'asc' ? '↑' : '↓'}
-                          </span>
-                        )}
-                      </div>
-                    </th>
-                    <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                      onClick={() => handleSort('completedAt')}
-                    >
-                      <div className="flex items-center gap-2">
-                        Completed
-                        {sortField === 'completedAt' && (
-                          <span className="text-gray-400">
-                            {sortDirection === 'asc' ? '↑' : '↓'}
-                          </span>
-                        )}
-                      </div>
-                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
                     </th>
@@ -375,11 +290,6 @@ export default function TodosPage() {
                             className="w-4 h-4 text-black"
                           />
                           <div className="flex flex-col gap-1">
-                            {todo.completed && (
-                              <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                Complete
-                              </span>
-                            )}
                             {todo.isPrivate && (
                               <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                 Private
@@ -391,7 +301,12 @@ export default function TodosPage() {
                       <td className="px-6 py-4">
                         <div>
                           <h3 className={`font-medium ${todo.completed ? 'line-through text-gray-500' : 'text-black'}`}>
-                            {todo.title}
+                            <button
+                              onClick={() => setSelectedTodo(todo)}
+                              className="text-blue-600 hover:text-blue-800 underline text-left"
+                            >
+                              {todo.title}
+                            </button>
                           </h3>
                           {todo.description && (
                             <p className={`text-sm mt-1 ${todo.completed ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -425,33 +340,6 @@ export default function TodosPage() {
                           <div className="text-xs text-blue-600 mt-1">Other User</div>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div>
-                          {new Date(todo.createdAt).toLocaleDateString()}
-                          <br />
-                          <span className="text-xs">
-                            {new Date(todo.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {todo.completed && todo.completedAt ? (
-                          <div className="text-green-600">
-                            {new Date(todo.completedAt).toLocaleDateString()}
-                            <br />
-                            <span className="text-xs">
-                              {new Date(todo.completedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </span>
-                            {todo.completedByUser && (
-                              <div className="text-xs text-gray-500 mt-1">
-                                by {todo.completedByUser.firstName ? `${todo.completedByUser.firstName} ${todo.completedByUser.lastName}` : todo.completedByUser.email}
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="text-gray-400">-</span>
-                        )}
-                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         {todo.userId === user?.id && (
                           <div className="flex flex-col gap-1">
@@ -478,7 +366,129 @@ export default function TodosPage() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+      </div>
+
+      {/* Todo Details Modal */}
+      {selectedTodo && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-2xl font-bold text-black">Todo Details</h2>
+                <button
+                  onClick={() => setSelectedTodo(null)}
+                  className="text-gray-400 hover:text-gray-600 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                  <p className="text-lg text-black">
+                    {selectedTodo.title}
+                  </p>
+                </div>
+
+                {selectedTodo.description && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <p className={`${selectedTodo.completed ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {selectedTodo.description}
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <p className="text-gray-900">{selectedTodo.category || 'No category'}</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <div className="flex items-center gap-2">
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        selectedTodo.completed 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {selectedTodo.completed ? 'Completed' : 'Pending'}
+                      </span>
+                      {selectedTodo.isPrivate && (
+                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                          Private
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {selectedTodo.dueDate && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                    <p className={`${new Date(selectedTodo.dueDate) < new Date() && !selectedTodo.completed ? 'text-red-600 font-medium' : 'text-gray-900'}`}>
+                      {new Date(selectedTodo.dueDate).toLocaleDateString()} at {new Date(selectedTodo.dueDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {new Date(selectedTodo.dueDate) < new Date() && !selectedTodo.completed && (
+                        <span className="ml-2 text-red-600 font-medium">(Overdue)</span>
+                      )}
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Created By</label>
+                    <p className="text-gray-900">
+                      {selectedTodo.user?.firstName ? `${selectedTodo.user.firstName} ${selectedTodo.user.lastName}` : selectedTodo.user?.email || 'Unknown'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Created On</label>
+                    <p className="text-gray-900">
+                      {new Date(selectedTodo.createdAt).toLocaleDateString()} at {new Date(selectedTodo.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                </div>
+
+                {selectedTodo.completed && selectedTodo.completedAt && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Completed By</label>
+                      <p className="text-gray-900">
+                        {selectedTodo.completedByUser ? 
+                          (selectedTodo.completedByUser.firstName ? 
+                            `${selectedTodo.completedByUser.firstName} ${selectedTodo.completedByUser.lastName}` : 
+                            selectedTodo.completedByUser.email
+                          ) : 'Unknown'
+                        }
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Completed On</label>
+                      <p className="text-gray-900">
+                        {new Date(selectedTodo.completedAt).toLocaleDateString()} at {new Date(selectedTodo.completedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setSelectedTodo(null)}
+                  className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-black transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </AdminLayout>
   )
 }

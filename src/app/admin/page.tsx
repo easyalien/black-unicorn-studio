@@ -81,7 +81,7 @@ export default function AdminPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Todo Management Card */}
+          {/* ToDo Management Card */}
           <div 
             onClick={() => router.push('/admin/todos')}
             className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow cursor-pointer group"
@@ -96,7 +96,7 @@ export default function AdminPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </div>
-            <h3 className="text-xl font-heading font-semibold text-black mb-2">Todo Management</h3>
+            <h3 className="text-xl font-heading font-semibold text-black mb-2">ToDo Management</h3>
             <p className="text-gray-600">Create, update, and track business tasks and projects</p>
           </div>
 

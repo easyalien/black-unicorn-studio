@@ -28,7 +28,9 @@
   - **FR-012c**: Category-based organization and filtering
   - **FR-012d**: Due date management with overdue indicators
   - **FR-012e**: Completion tracking with timestamps and user attribution
-  - **FR-012f**: Sortable table interface with multi-column sorting
+  - **FR-012f**: Streamlined sortable table interface with essential columns
+  - **FR-012g**: Interactive todo details popup with comprehensive information display
+  - **FR-012h**: Clickable todo titles for detailed view access
 - **FR-013**: User Management System (Superuser-only access)
   - **FR-013a**: Create, read, update, delete user accounts
   - **FR-013b**: Personal information management (firstName, lastName, title)
@@ -45,6 +47,10 @@
 - **FR-017**: Settings - Configure application preferences (Future)
 - **FR-018**: Reports & Analytics - Generate business reports and analytics (Future)
 - **FR-019**: All business functions only accessible to authenticated users
+- **FR-020**: Reusable Component Architecture
+  - **FR-020a**: AdminLayout component for consistent admin page structure
+  - **FR-020b**: Shared authentication handling and user context management
+  - **FR-020c**: Modal components for detailed information display
 
 ### 3. Technical Requirements
 
@@ -55,38 +61,40 @@
 - **TR-004**: Google Fonts integration (Poppins for headings/brand, Inter for body text)
 - **TR-005**: Responsive design (mobile-first approach)
 - **TR-006**: Client-side routing for SPA experience
+- **TR-007**: Reusable component architecture with shared layouts
+- **TR-008**: Modal and popup components for enhanced user interactions
 
 #### 3.2 Authentication & Authorization
-- **TR-007**: JWT tokens with HTTP-only cookies for session management
-- **TR-008**: Secure password handling with bcrypt hashing (salt rounds: 12)
-- **TR-009**: Authentication state management with user context
-- **TR-010**: Route protection for authenticated pages
-- **TR-011**: Role-based access control implementation
-- **TR-012**: Superuser-only API endpoint protection
-- **TR-013**: User role validation on both client and server side
+- **TR-009**: JWT tokens with HTTP-only cookies for session management
+- **TR-010**: Secure password handling with bcrypt hashing (salt rounds: 12)
+- **TR-011**: Authentication state management with user context
+- **TR-012**: Route protection for authenticated pages
+- **TR-013**: Role-based access control implementation
+- **TR-014**: Superuser-only API endpoint protection
+- **TR-015**: User role validation on both client and server side
 
 #### 3.3 Data Management
-- **TR-014**: PostgreSQL database for production with Neon hosting
-- **TR-015**: Prisma ORM for type-safe database operations and migrations
-- **TR-016**: Comprehensive database schema with User and Todo entities
-- **TR-017**: User-Todo relational data with creator and completer tracking
-- **TR-018**: API routes for CRUD operations across all business modules
-- **TR-019**: Role-based data access control in API endpoints
-- **TR-020**: Public/private todo visibility implementation
-- **TR-021**: Client-side state management (React state/context) for UI state only
-- **TR-022**: Form validation for authentication and business data inputs
-- **TR-023**: Database indexing for optimal query performance
+- **TR-016**: PostgreSQL database for production with Neon hosting
+- **TR-017**: Prisma ORM for type-safe database operations and migrations
+- **TR-018**: Comprehensive database schema with User and Todo entities
+- **TR-019**: User-Todo relational data with creator and completer tracking
+- **TR-020**: API routes for CRUD operations across all business modules
+- **TR-021**: Role-based data access control in API endpoints
+- **TR-022**: Public/private todo visibility implementation
+- **TR-023**: Client-side state management (React state/context) for UI state only
+- **TR-024**: Form validation for authentication and business data inputs
+- **TR-025**: Database indexing for optimal query performance
 
 #### 3.4 Security
-- **TR-024**: HTTPS enforcement in production
-- **TR-025**: Input sanitization and validation on all endpoints
-- **TR-026**: CSRF protection with HTTP-only cookies
-- **TR-027**: Secure storage of authentication credentials in database
-- **TR-028**: Password hashing with bcrypt (salt rounds: 12)
-- **TR-029**: Environment variables for sensitive configuration
-- **TR-030**: Role-based data access control with server-side validation
-- **TR-031**: SQL injection prevention through Prisma ORM
-- **TR-032**: XSS protection through proper data sanitization
+- **TR-026**: HTTPS enforcement in production
+- **TR-027**: Input sanitization and validation on all endpoints
+- **TR-028**: CSRF protection with HTTP-only cookies
+- **TR-029**: Secure storage of authentication credentials in database
+- **TR-030**: Password hashing with bcrypt (salt rounds: 12)
+- **TR-031**: Environment variables for sensitive configuration
+- **TR-032**: Role-based data access control with server-side validation
+- **TR-033**: SQL injection prevention through Prisma ORM
+- **TR-034**: XSS protection through proper data sanitization
 
 ### 4. Non-Functional Requirements
 
@@ -151,7 +159,8 @@ buds/
 │   │   │   └── reports/page.tsx (future)
 │   │   └── layout.tsx
 │   ├── components/
-│   │   └── AuthModal.tsx
+│   │   ├── AuthModal.tsx
+│   │   └── AdminLayout.tsx
 │   ├── lib/
 │   │   ├── auth.ts
 │   │   ├── db.ts
@@ -213,7 +222,9 @@ buds/
   - ✅ Public/private todo visibility system
   - ✅ Category-based organization and due date tracking
   - ✅ Completion tracking with user attribution and timestamps
-  - ✅ Sortable table interface with comprehensive data display
+  - ✅ Streamlined sortable table interface with essential columns
+  - ✅ Interactive todo details popup with comprehensive information display
+  - ✅ Clickable todo titles for detailed view access
 - ✅ Session persists across page refreshes with JWT tokens
 - ✅ Application is secure with bcrypt hashing and role-based access control
 - ✅ Typography matches brand design with Poppins and Inter fonts
@@ -221,3 +232,5 @@ buds/
 - ✅ Modular architecture supports future business module expansion
 - ✅ Comprehensive database schema with User-Todo relationships
 - ✅ API endpoints secured with role-based authorization
+- ✅ Reusable AdminLayout component for consistent admin page structure
+- ✅ Modal components for enhanced user interactions and detailed information display
