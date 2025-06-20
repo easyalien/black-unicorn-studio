@@ -62,7 +62,7 @@ export default function AdminPage() {
               onClick={() => router.push('/')}
             />
             <h1 
-              className="text-2xl font-brand font-bold text-black cursor-pointer hover:opacity-80 transition-opacity"
+              className="hidden md:block text-2xl font-brand font-bold text-black cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => router.push('/')}
             >
               Black Unicorn Design Studio

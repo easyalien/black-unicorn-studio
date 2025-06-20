@@ -182,6 +182,9 @@ This style guide documents the existing clean, minimal design system used throug
 - **Grid Collapse**: 3-column → 2-column → 1-column
 - **Typography Scaling**: Larger text on larger screens
 - **Spacing Adjustments**: More generous spacing on larger screens
+- **Content Hiding**: Hide secondary text elements on mobile for cleaner headers
+  - Landing page: Heading breaks into two lines on mobile
+  - Admin headers: Hide brand text and welcome messages on small screens
 
 ## Accessibility Guidelines
 
@@ -217,6 +220,28 @@ This style guide documents the existing clean, minimal design system used throug
     </div>
   </main>
 </div>
+```
+
+### Responsive Header Structure
+```jsx
+<header className="bg-white shadow-sm border-b">
+  <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div className="flex items-center gap-4">
+      <Image src="/logo.png" alt="Logo" width={40} height={40} />
+      {/* Hide brand text on mobile */}
+      <h1 className="hidden md:block text-2xl font-brand font-bold">
+        Brand Name
+      </h1>
+    </div>
+    <div className="flex items-center gap-4">
+      {/* Hide welcome message on mobile */}
+      <span className="hidden md:inline text-gray-600">
+        Welcome, User
+      </span>
+      <button className="btn btn-secondary">Logout</button>
+    </div>
+  </div>
+</header>
 ```
 
 ### Form Structure
