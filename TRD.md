@@ -2,7 +2,7 @@
 ## Black Unicorn Design Studio Web Application
 
 ### 1. Project Overview
-**Objective**: Create a Next.js web application with a public landing page and private todo management system for Black Unicorn Design Studio.
+**Objective**: Create a comprehensive Next.js web application with a public landing page and private business administration system featuring role-based access control, user management, and advanced todo management for Black Unicorn Design Studio.
 
 ### 2. Functional Requirements
 
@@ -16,18 +16,35 @@
 - **FR-005**: Email and password authentication
 - **FR-006**: No public account creation functionality
 - **FR-007**: Authentication modal triggered by logo click
-- **FR-008**: Session persistence for authenticated users
-- **FR-009**: Secure logout functionality
+- **FR-008**: Session persistence for authenticated users with JWT tokens
+- **FR-009**: Secure logout functionality with token invalidation
+- **FR-010**: Role-based authentication with MEMBER and SUPERUSER roles
 
 #### 2.3 Business Administration System
-- **FR-010**: Dashboard with card-based navigation to different modules
-- **FR-011**: Todo Management - Create, read, update, delete business tasks
-- **FR-012**: User Management - Manage user accounts and permissions
-- **FR-013**: Client Management - Manage client relationships and contacts
-- **FR-014**: Project Management - Manage client projects and deliverables
-- **FR-015**: Settings - Configure application preferences
-- **FR-016**: Reports & Analytics - Generate business reports and analytics
-- **FR-017**: All business functions only accessible to authenticated users
+- **FR-011**: Dashboard with card-based navigation to different modules
+- **FR-012**: Advanced Todo Management System
+  - **FR-012a**: Create, read, update, delete business tasks with comprehensive tracking
+  - **FR-012b**: Public/private todo visibility system (public visible to all, private only to creator)
+  - **FR-012c**: Category-based organization and filtering
+  - **FR-012d**: Due date management with overdue indicators
+  - **FR-012e**: Completion tracking with timestamps and user attribution
+  - **FR-012f**: Sortable table interface with multi-column sorting
+- **FR-013**: User Management System (Superuser-only access)
+  - **FR-013a**: Create, read, update, delete user accounts
+  - **FR-013b**: Personal information management (firstName, lastName, title)
+  - **FR-013c**: Role assignment and management (MEMBER/SUPERUSER)
+  - **FR-013d**: Password management with secure hashing
+  - **FR-013e**: User statistics tracking (todo counts)
+  - **FR-013f**: Sortable table interface with user search and filtering
+- **FR-014**: Role-Based Access Control
+  - **FR-014a**: MEMBER role - Access to todo management only
+  - **FR-014b**: SUPERUSER role - Full access to all admin functions
+  - **FR-014c**: Page-level access restrictions based on user role
+- **FR-015**: Client Management - Manage client relationships and contacts (Future)
+- **FR-016**: Project Management - Manage client projects and deliverables (Future)
+- **FR-017**: Settings - Configure application preferences (Future)
+- **FR-018**: Reports & Analytics - Generate business reports and analytics (Future)
+- **FR-019**: All business functions only accessible to authenticated users
 
 ### 3. Technical Requirements
 
@@ -39,28 +56,37 @@
 - **TR-005**: Responsive design (mobile-first approach)
 - **TR-006**: Client-side routing for SPA experience
 
-#### 3.2 Authentication
+#### 3.2 Authentication & Authorization
 - **TR-007**: JWT tokens with HTTP-only cookies for session management
-- **TR-008**: Secure password handling with bcrypt hashing
-- **TR-009**: Authentication state management
+- **TR-008**: Secure password handling with bcrypt hashing (salt rounds: 12)
+- **TR-009**: Authentication state management with user context
 - **TR-010**: Route protection for authenticated pages
+- **TR-011**: Role-based access control implementation
+- **TR-012**: Superuser-only API endpoint protection
+- **TR-013**: User role validation on both client and server side
 
 #### 3.3 Data Management
-- **TR-011**: PostgreSQL database for production, SQLite for development
-- **TR-012**: Prisma ORM for type-safe database operations
-- **TR-013**: API routes for CRUD operations across all business modules
-- **TR-014**: Client-side state management (React state/context) for UI state only
-- **TR-015**: Form validation for authentication and business data inputs
-- **TR-016**: Database schema for users, todos, and future business entities
+- **TR-014**: PostgreSQL database for production with Neon hosting
+- **TR-015**: Prisma ORM for type-safe database operations and migrations
+- **TR-016**: Comprehensive database schema with User and Todo entities
+- **TR-017**: User-Todo relational data with creator and completer tracking
+- **TR-018**: API routes for CRUD operations across all business modules
+- **TR-019**: Role-based data access control in API endpoints
+- **TR-020**: Public/private todo visibility implementation
+- **TR-021**: Client-side state management (React state/context) for UI state only
+- **TR-022**: Form validation for authentication and business data inputs
+- **TR-023**: Database indexing for optimal query performance
 
 #### 3.4 Security
-- **TR-017**: HTTPS enforcement in production
-- **TR-018**: Input sanitization and validation
-- **TR-019**: CSRF protection
-- **TR-020**: Secure storage of authentication credentials in database
-- **TR-021**: Password hashing with bcrypt
-- **TR-022**: Environment variables for sensitive configuration
-- **TR-023**: User-specific data access control
+- **TR-024**: HTTPS enforcement in production
+- **TR-025**: Input sanitization and validation on all endpoints
+- **TR-026**: CSRF protection with HTTP-only cookies
+- **TR-027**: Secure storage of authentication credentials in database
+- **TR-028**: Password hashing with bcrypt (salt rounds: 12)
+- **TR-029**: Environment variables for sensitive configuration
+- **TR-030**: Role-based data access control with server-side validation
+- **TR-031**: SQL injection prevention through Prisma ORM
+- **TR-032**: XSS protection through proper data sanitization
 
 ### 4. Non-Functional Requirements
 
@@ -93,6 +119,7 @@
 | Runtime | Node.js | 18+ |
 | Package Manager | npm | Latest |
 | Hosting | Vercel | Latest |
+| Database Hosting | Neon PostgreSQL | Latest |
 
 ### 6. Project Structure
 ```
@@ -104,12 +131,20 @@ buds/
 │   ├── app/
 │   │   ├── api/
 │   │   │   ├── auth/
-│   │   │   └── todos/
+│   │   │   │   ├── login/route.ts
+│   │   │   │   ├── logout/route.ts
+│   │   │   │   └── me/route.ts
+│   │   │   ├── todos/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/route.ts
+│   │   │   └── users/
+│   │   │       ├── route.ts
+│   │   │       └── [id]/route.ts
 │   │   ├── page.tsx (landing page)
 │   │   ├── admin/
 │   │   │   ├── page.tsx (dashboard)
-│   │   │   ├── todos/page.tsx
-│   │   │   ├── users/page.tsx (future)
+│   │   │   ├── todos/page.tsx (implemented)
+│   │   │   ├── users/page.tsx (implemented - superuser only)
 │   │   │   ├── clients/page.tsx (future)
 │   │   │   ├── projects/page.tsx (future)
 │   │   │   ├── settings/page.tsx (future)
@@ -122,7 +157,7 @@ buds/
 │   │   ├── db.ts
 │   │   └── utils.ts
 │   └── types/
-│       └── index.ts
+│       └── index.ts (User, Todo, UserRole interfaces)
 ├── prisma/
 │   ├── schema.prisma
 │   └── seed.ts
@@ -169,9 +204,20 @@ buds/
 - ✅ Logo click triggers authentication modal
 - ✅ Valid credentials grant access to business administration system
 - ✅ Dashboard provides card-based navigation to all business modules
-- ✅ Todo CRUD operations function correctly
-- ✅ Session persists across page refreshes
-- ✅ Application is secure and follows best practices
+- ✅ Role-based access control implemented (MEMBER/SUPERUSER roles)
+- ✅ User Management system fully functional (Superuser-only access)
+  - ✅ User CRUD operations with personal information fields
+  - ✅ Role assignment and management capabilities
+  - ✅ Sortable table interface with user statistics
+- ✅ Advanced Todo Management system implemented
+  - ✅ Public/private todo visibility system
+  - ✅ Category-based organization and due date tracking
+  - ✅ Completion tracking with user attribution and timestamps
+  - ✅ Sortable table interface with comprehensive data display
+- ✅ Session persists across page refreshes with JWT tokens
+- ✅ Application is secure with bcrypt hashing and role-based access control
 - ✅ Typography matches brand design with Poppins and Inter fonts
-- ✅ Application deployed to production with PostgreSQL database
+- ✅ Application deployed to production with Neon PostgreSQL database
 - ✅ Modular architecture supports future business module expansion
+- ✅ Comprehensive database schema with User-Todo relationships
+- ✅ API endpoints secured with role-based authorization

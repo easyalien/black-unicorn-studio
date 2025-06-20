@@ -14,7 +14,28 @@ export async function GET() {
     }
 
     const todos = await prisma.todo.findMany({
-      where: { userId: user.id },
+      where: {
+        OR: [
+          { isPrivate: false }, // All public todos
+          { userId: user.id }   // User's own todos (private or public)
+        ]
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true
+          }
+        },
+        completedByUser: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true
+          }
+        }
+      },
       orderBy: { createdAt: 'desc' }
     })
 
@@ -39,7 +60,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { title, description } = await request.json()
+    const { title, description, category, isPrivate, dueDate } = await request.json()
 
     if (!title?.trim()) {
       return NextResponse.json(
@@ -52,7 +73,26 @@ export async function POST(request: NextRequest) {
       data: {
         title: title.trim(),
         description: description?.trim() || null,
+        category: category?.trim() || null,
+        isPrivate: isPrivate || false,
+        dueDate: dueDate ? new Date(dueDate) : null,
         userId: user.id
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true
+          }
+        },
+        completedByUser: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true
+          }
+        }
       }
     })
 

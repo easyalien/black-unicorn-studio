@@ -10,22 +10,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  MEMBER
+  SUPERUSER
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  todos     Todo[]
+  id              String   @id @default(cuid())
+  email           String   @unique
+  password        String
+  firstName       String?
+  lastName        String?
+  title           String?
+  role            UserRole @default(MEMBER)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  createdTodos    Todo[]   @relation("TodoCreator")
+  completedTodos  Todo[]   @relation("TodoCompleter")
 }
 
 model Todo {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   description String?
-  completed   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  category    String?
+  completed   Boolean   @default(false)
+  isPrivate   Boolean   @default(false)
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade, name: "TodoCreator")
+  completedBy String?
+  completedByUser User? @relation(fields: [completedBy], references: [id], onDelete: SetNull, name: "TodoCompleter")
 }

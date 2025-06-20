@@ -37,7 +37,7 @@ export async function getCurrentUser() {
 
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
-      select: { id: true, email: true, createdAt: true, updatedAt: true }
+      select: { id: true, email: true, firstName: true, lastName: true, title: true, role: true, createdAt: true, updatedAt: true }
     })
 
     return user
@@ -59,6 +59,10 @@ export async function authenticateUser(email: string, password: string) {
   return {
     id: user.id,
     email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    title: user.title,
+    role: user.role,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt
   }

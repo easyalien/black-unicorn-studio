@@ -100,24 +100,26 @@ export default function AdminPage() {
             <p className="text-gray-600">Create, update, and track business tasks and projects</p>
           </div>
 
-          {/* User Management Card */}
-          <div 
-            onClick={() => router.push('/admin/users')}
-            className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow cursor-pointer group"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-green-100 rounded-lg">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+          {/* User Management Card - Only visible to superusers */}
+          {user?.role === 'SUPERUSER' && (
+            <div 
+              onClick={() => router.push('/admin/users')}
+              className="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow cursor-pointer group"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                </div>
+                <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </div>
-              <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              <h3 className="text-xl font-heading font-semibold text-black mb-2">User Management</h3>
+              <p className="text-gray-600">Manage user accounts, permissions, and access control</p>
             </div>
-            <h3 className="text-xl font-heading font-semibold text-black mb-2">User Management</h3>
-            <p className="text-gray-600">Manage user accounts, permissions, and access control</p>
-          </div>
+          )}
 
           {/* Client Management Card */}
           <div 
