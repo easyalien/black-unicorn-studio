@@ -61,10 +61,15 @@ export default function AdminPage() {
               className="cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => router.push('/')}
             />
-            <h1 className="text-2xl font-brand font-bold text-black">Black Unicorn Design Studio</h1>
+            <h1 
+              className="text-2xl font-brand font-bold text-black cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => router.push('/')}
+            >
+              Black Unicorn Design Studio
+            </h1>
           </div>
           <div className="flex items-center gap-4 ml-auto">
-            <span className="text-gray-600">Welcome, {user?.email}</span>
+            <span className="text-gray-600">Welcome, {user?.firstName || user?.email}</span>
             <button
               onClick={logout}
               className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md text-black transition-colors"

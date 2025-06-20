@@ -19,6 +19,12 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Black Unicorn Design Studio",
   description: "Human centered, AI powered design studio",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({
